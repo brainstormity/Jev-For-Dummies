@@ -572,7 +572,7 @@ async def simple_docs() -> HTMLResponse:
         <div id="panel-choice" class="endpoint-panel">
           <div class="presets-bar">
             <span class="presets-title">Quick Presets:</span>
-            <button class="preset-chip" onclick="setChoice('Win a free brand new iPhone! Click here now.', 'spam, not spam')">Spam Filter</button>
+            <button class="preset-chip" onclick="setChoice('Win a free brand new car! Click here now.', 'scam, not scam')">Scam Filter</button>
             <button class="preset-chip" onclick="setChoice('This was the most delicious pizza I have ever had.', 'positive, neutral, negative')">Sentiment</button>
             <button class="preset-chip" onclick="setChoice('Production database is down and customers cannot checkout.', 'urgent, high, normal, low')">Ticket Priority</button>
           </div>
@@ -585,7 +585,7 @@ async def simple_docs() -> HTMLResponse:
               <code class="param-name">input</code>
             </div>
             <div class="param-desc">The content string to evaluate.</div>
-            <textarea class="param-textarea" id="choice-input" placeholder="e.g. Win a free iPhone">Win a free brand new iPhone! Click here now.</textarea>
+            <textarea class="param-textarea" id="choice-input" placeholder="e.g. Win a free car">Win a free brand new car! Click here now.</textarea>
           </div>
 
           <div class="param-group">
@@ -594,7 +594,7 @@ async def simple_docs() -> HTMLResponse:
               <code class="param-name">choices</code>
             </div>
             <div class="param-desc">Comma-separated candidate options (minimum 2).</div>
-            <input type="text" class="param-input" id="choice-options" value="spam, not spam" placeholder="e.g. spam, not spam" />
+            <input type="text" class="param-input" id="choice-options" value="scam, not scam" placeholder="e.g. scam, not scam" />
           </div>
         </div>
 
@@ -602,7 +602,7 @@ async def simple_docs() -> HTMLResponse:
         <div id="panel-noul" class="endpoint-panel" style="display: none;">
           <div class="presets-bar">
             <span class="presets-title">Quick Presets:</span>
-            <button class="preset-chip" onclick="setNoul('Win a free brand new iPhone! Click here now.', 'Is this a scam?')">Is this a scam?</button>
+            <button class="preset-chip" onclick="setNoul('Win a free brand new car! Click here now.', 'Is this a scam?')">Is this a scam?</button>
             <button class="preset-chip" onclick="setNoul('Our team successfully shipped version 2.0 ahead of schedule!', 'Is this positive news?')">Is this positive?</button>
             <button class="preset-chip" onclick="setNoul('Where can I download my annual billing receipt?', 'Is this asking a question?')">Is it a question?</button>
           </div>
@@ -615,7 +615,7 @@ async def simple_docs() -> HTMLResponse:
               <code class="param-name">input</code>
             </div>
             <div class="param-desc">The content string to evaluate.</div>
-            <textarea class="param-textarea" id="noul-input" placeholder="e.g. Win a free iPhone">Win a free brand new iPhone! Click here now.</textarea>
+            <textarea class="param-textarea" id="noul-input" placeholder="e.g. Win a free car">Win a free brand new car! Click here now.</textarea>
           </div>
 
           <div class="param-group">

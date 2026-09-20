@@ -22,12 +22,12 @@ async def choice_endpoint(
     input: Optional[str] = Query(
         None,
         description="The content to evaluate",
-        examples=["Win a free iPhone"],
+        examples=["Win a free brand new car! Click here now."],
     ),
     choices: Optional[str] = Query(
         None,
         description="Comma-separated options to select from",
-        examples=["spam,not spam"],
+        examples=["scam,not scam"],
     ),
 ) -> Response:
     """Evaluate an input against a comma-separated list of choices."""
@@ -53,12 +53,12 @@ async def noul_endpoint(
     input: Optional[str] = Query(
         None,
         description="The content to evaluate",
-        examples=["Win a free iPhone"],
+        examples=["Win a free brand new car! Click here now."],
     ),
     question: Optional[str] = Query(
         None,
         description="The yes/no question to evaluate",
-        examples=["Is this spam?"],
+        examples=["Is this a scam?"],
     ),
 ) -> Response:
     """Evaluate an input against a yes/no question."""

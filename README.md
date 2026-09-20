@@ -61,18 +61,18 @@ All decision endpoints operate via simple HTTP GET requests with query parameter
 Select one option from a comma-separated list of candidate choices:
 
 ```bash
-curl "http://localhost:8787/choice?input=Win+a+free+iPhone&choices=spam,not+spam"
+curl "http://localhost:8787/choice?input=Win+a+free+brand+new+car!+Click+here+now.&choices=scam,not+scam"
 ```
 
 Response:
 
 ```json
 {
-  "result": "spam",
-  "confidence": 0.94,
+  "result": "scam",
+  "confidence": 0.96,
   "probabilities": {
-    "spam": 0.94,
-    "not spam": 0.06
+    "scam": 0.96,
+    "not scam": 0.04
   }
 }
 ```
@@ -102,7 +102,7 @@ curl "http://localhost:8787/choice?input=I+love+this+product&choices=positive,ne
 Evaluate a yes/no proposition as a boolean (`true` or `false`):
 
 ```bash
-curl "http://localhost:8787/noul?input=Win+a+free+iPhone&question=Is+this+spam?"
+curl "http://localhost:8787/noul?input=Win+a+free+brand+new+car!+Click+here+now.&question=Is+this+a+scam?"
 ```
 
 Response:
