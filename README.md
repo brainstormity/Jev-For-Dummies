@@ -5,10 +5,10 @@ The stupidly simple HTTP API for Jev.
 Turn Jev's decision primitives into simple HTTP GET requests.
 
 No SDK.  
-No complicated request bodies.  
+No complicated setup.  
 No Jev knowledge required.  
 
-Just HTTP → Jev → JSON to get started with Jev
+Just HTTP GET → Jev → JSON to get started with Jev.
 
 ---
 
@@ -44,23 +44,21 @@ uvicorn app.main:app --host 0.0.0.0 --port 8787
 
 ---
 
-## Interactive API Docs
+## Interactive API Docs & Playground
 
-Explore and test the API directly from your browser with built-in Swagger UI:
+Explore and test the API directly from your browser:
 
-```
-http://localhost:8787/docs
-```
+- **Interactive Playground & Docs**: [http://localhost:8787/docs](http://localhost:8787/docs) (features live URL generation, preset scenarios, and instant execution)
 
 ---
 
-## The Entire Public API
+## The Public API
 
-The entire service consists of three endpoints, all using simple HTTP GET queries:
+All decision endpoints operate via simple HTTP GET requests with query parameters.
 
-### 1. Choice
+### 1. Choice (`/choice`)
 
-Select one option from a comma-separated list of choices:
+Select one option from a comma-separated list of candidate choices:
 
 ```bash
 curl "http://localhost:8787/choice?input=Win+a+free+iPhone&choices=spam,not+spam"
@@ -79,7 +77,7 @@ Response:
 }
 ```
 
-Another example:
+Another example (sentiment analysis):
 
 ```bash
 curl "http://localhost:8787/choice?input=I+love+this+product&choices=positive,negative,neutral"
@@ -99,9 +97,9 @@ curl "http://localhost:8787/choice?input=I+love+this+product&choices=positive,ne
 
 ---
 
-### 2. Noul
+### 2. Noul (`/noul`)
 
-Evaluate a yes/no decision as a boolean:
+Evaluate a yes/no proposition as a boolean (`true` or `false`):
 
 ```bash
 curl "http://localhost:8787/noul?input=Win+a+free+iPhone&question=Is+this+spam?"
@@ -111,7 +109,8 @@ Response:
 
 ```json
 {
-  "result": true
+  "result": true,
+  "confidence": 0.98
 }
 ```
 
@@ -121,8 +120,6 @@ Another example:
 curl "http://localhost:8787/noul?input=This+is+a+normal+message&question=Is+this+spam?"
 ```
 
-Response:
-
 ```json
 {
   "result": false
@@ -131,7 +128,7 @@ Response:
 
 ---
 
-### 3. Score
+### 3. Score (`/score`)
 
 Rate content along an integer numeric scale (`min` to `max`):
 
@@ -150,7 +147,9 @@ Response:
 
 ---
 
-### Health Check
+### Health Check (`/health`)
+
+Check service availability:
 
 ```bash
 curl "http://localhost:8787/health"
@@ -164,19 +163,17 @@ curl "http://localhost:8787/health"
 
 ---
 
-## Metadata
+## Metadata & Response Guarantees
 
-When TypeSafe returns confidence or probability distributions, JEV for Dummies includes them in the JSON response. If Jev does not return a field, it is not fabricated.
-
-All successful responses return `200 OK` with `Content-Type: application/json`.
-
-All error responses return standard JSON error objects:
-
-```json
-{
-  "error": "choices is required"
-}
-```
+- **Uniform Responses**: Every decision response contains a top-level `"result"` field.
+- **Confidence & Probabilities**: When returned by TypeSafe, `"confidence"` and/or `"probabilities"` are included. If Jev does not return a field, it is never fabricated.
+- **Content-Type**: All responses return `Content-Type: application/json`.
+- **Clean Errors**: All errors return a standard 4xx/5xx status with:
+  ```json
+  {
+    "error": "choices is required"
+  }
+  ```
 
 ---
 

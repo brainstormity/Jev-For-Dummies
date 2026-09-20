@@ -147,3 +147,4 @@ async def test_upstream_jev_error(client: httpx.AsyncClient):
     assert response.status_code == 429
     assert response.headers["content-type"].startswith("application/json")
     assert response.json() == {"error": "Jev rate limit exceeded"}
+

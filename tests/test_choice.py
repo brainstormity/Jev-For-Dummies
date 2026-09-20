@@ -174,3 +174,4 @@ async def test_upstream_timeout(client: httpx.AsyncClient):
     assert response.status_code == 504
     assert response.headers["content-type"].startswith("application/json")
     assert response.json() == {"error": "TypeSafe API request timed out"}
+

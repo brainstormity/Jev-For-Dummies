@@ -111,3 +111,4 @@ async def test_upstream_jev_error(client: httpx.AsyncClient):
     assert response.status_code == 401
     assert response.headers["content-type"].startswith("application/json")
     assert response.json() == {"error": "Jev authentication failed"}
+
