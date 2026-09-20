@@ -366,6 +366,13 @@ async def simple_docs() -> HTMLResponse:
         color: #0f172a;
       }
 
+      .copy-btn.copied {
+        background: #ecfdf5;
+        border-color: #a7f3d0;
+        color: #059669;
+        font-weight: 700;
+      }
+
       .live-url-row {
         display: flex;
         align-items: flex-start;
@@ -770,14 +777,64 @@ async def simple_docs() -> HTMLResponse:
         if (el) el.innerText = url;
       }
 
-      function copyConstructedUrl() {
-        const url = getConstructedUrl();
-        navigator.clipboard.writeText(url).then(() => {
-          const btn = document.getElementById('btn-copy');
-          const old = btn.innerText;
-          btn.innerText = 'Copied!';
-          setTimeout(() => { btn.innerText = old; }, 1500);
-        });
+      async function copyConstructedUrl() {
+        const liveEl = document.getElementById('live-url-text');
+        const url = (liveEl && liveEl.innerText && liveEl.innerText !== 'http://...')
+          ? liveEl.innerText
+          : getConstructedUrl();
+
+        const btn = document.getElementById('btn-copy');
+        let copied = false;
+
+        // 1. Try modern Clipboard API if available in a secure context
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function' && window.isSecureContext) {
+          try {
+            await navigator.clipboard.writeText(url);
+            copied = true;
+          } catch (e) {
+            copied = false;
+          }
+        }
+
+        // 2. Fallback to execCommand for non-secure contexts (e.g. http://0.0.0.0, LAN IPs) or restricted environments
+        if (!copied) {
+          try {
+            const textArea = document.createElement('textarea');
+            textArea.value = url;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
+            textArea.style.top = '-9999px';
+            textArea.style.opacity = '0';
+            textArea.setAttribute('readonly', '');
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            textArea.setSelectionRange(0, 99999);
+            copied = document.execCommand('copy');
+            document.body.removeChild(textArea);
+          } catch (e) {
+            copied = false;
+          }
+        }
+
+        if (copied) {
+          if (btn) {
+            btn.innerText = 'Copied!';
+            btn.classList.add('copied');
+            if (btn._copyTimeout) clearTimeout(btn._copyTimeout);
+            btn._copyTimeout = setTimeout(() => {
+              btn.innerText = 'Copy URL';
+              btn.classList.remove('copied');
+            }, 1800);
+          }
+        } else {
+          // 3. Last-resort fallback: prompt user to copy manually
+          if (btn) {
+            btn.innerText = 'Failed';
+            setTimeout(() => { btn.innerText = 'Copy URL'; }, 1500);
+          }
+          window.prompt('Copy URL: Ctrl+C / Cmd+C, Enter', url);
+        }
       }
 
       function selectEndpoint(endpoint) {
